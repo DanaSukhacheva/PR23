@@ -36,8 +36,15 @@ import com.example.pr23_suhacheva.ui.theme.Pr23_SuhachevaTheme
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.compose.*
 
 
@@ -67,6 +74,10 @@ fun MedicApp() {
         composable("launch_screen") { LaunchScreen(navController) }
         composable("onboarding") { OnboardingScreen(navController) }
         composable("login") { LoginScreen() }
+        composable("EmailScreen") { EmailScreen(navController) }
+        composable("CodeVerificationScreen") { CodeVerificationScreen(navController) }
+        composable("CreatePasswordScreen") { CreatePasswordScreen(navController) }
+        composable("BioScreen"){BioScreen(navController)}
     }
 }
 
@@ -206,3 +217,185 @@ fun LoginScreen() {
         Text("Экран входа и регистрации")
     }
 }
+
+@Composable
+fun EmailScreen(navController: NavController) {
+    Scaffold { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text("Enter your email", style = MaterialTheme.typography.titleLarge)
+            Spacer(modifier = Modifier.height(16.dp))
+            BasicTextField(
+                value = "",
+                onValueChange = {},
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(56.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = { navController.navigate("CodeVerificationScreen") }) {
+                Text("Next")
+            }
+        }
+    }
+}
+
+@Composable
+fun CodeVerificationScreen(navController: NavController) {
+    Scaffold { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text("Enter the code sent to your email", style = MaterialTheme.typography.titleLarge)
+            Spacer(modifier = Modifier.height(16.dp))
+            BasicTextField(
+                value = "",
+                onValueChange = {},
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(56.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = { navController.navigate("CreatePasswordScreen") }) {
+                Text("Verify")
+            }
+        }
+    }
+}
+
+@Composable
+fun CreatePasswordScreen(navController: NavController) {
+    Scaffold { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text("Create a new password", style = MaterialTheme.typography.titleLarge)
+            Spacer(modifier = Modifier.height(16.dp))
+            BasicTextField(
+                value = "",
+                onValueChange = {},
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(56.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = { navController.navigate("BioScreen") }) {
+                Text("Submit")
+            }
+        }
+    }
+}
+
+@Composable
+fun BioScreen(navController: NavController) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        TextButton(onClick = { navController.navigate("BioScreen") }) {
+            Text("Пропустить", textAlign = TextAlign.End)
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            val nameText = remember { mutableStateOf("") }
+            val surnameText = remember { mutableStateOf("") }
+            val fathernameText = remember { mutableStateOf("") }
+            val dateOfBirthText = remember { mutableStateOf("") }
+
+            Text(
+                "Создание карты пациента",
+                fontSize = 24.sp,
+                fontWeight = Bold,
+                color = Color.Black
+            )
+            Spacer(Modifier.height(10.dp))
+            Text(
+                "Без карты пациента вы не сможете заказать анализы.",
+                fontSize = 14.sp,
+                color = Color(147, 147, 150)
+            )
+            Spacer(Modifier.height(10.dp))
+            Text(
+                "В картах пациентов будут храниться результаты анализов вас и ваших близких.",
+                fontSize = 14.sp,
+                color = Color(147, 147, 150)
+            )
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 20.dp, start = 15.dp),
+                value = nameText.value,
+                onValueChange = {
+                    nameText.value = it
+                },
+                label = {
+                    Text("Имя")
+                }
+            )
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 20.dp, start = 15.dp),
+                value = fathernameText.value,
+                onValueChange = {
+                    fathernameText.value = it
+                },
+                label = {
+                    Text("Отчество")
+                }
+            )
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 20.dp, start = 15.dp),
+                value = surnameText.value,
+                onValueChange = {
+                    surnameText.value = it
+                },
+                label = {
+                    Text("Фамилия")
+                }
+            )
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 20.dp, start = 15.dp),
+                value = dateOfBirthText.value,
+                onValueChange = {
+                    dateOfBirthText.value = it
+                },
+                label = {
+                    Text("Дата рождения")
+                }
+            )
+            Spacer(Modifier.height(10.dp))
+        }
+    }
+}
+
